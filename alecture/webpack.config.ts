@@ -81,12 +81,12 @@ const config: Configuration = {
     historyApiFallback: true, // react router, 속인다
     port: 3090,
     publicPath: '/dist/',
-    proxy: {
-      '/api/': {
-        target: 'http://localhost:3095',
-        changeOrigin: true,
-      },
-    },
+    // proxy: {
+    //   '/api/': {
+    //     target: 'http://localhost:3095',
+    //     changeOrigin: true,
+    //   },
+    // },
   },
 };
 
@@ -96,7 +96,7 @@ if (isDevelopment && config.plugins) {
   // config.plugins.push(new BundleAnalyzerPlugin({ analyzerMode: 'server', openAnalyzer: true }));
 }
 if (!isDevelopment && config.plugins) {
-  // config.plugins.push(new webpack.LoaderOptionsPlugin({ minimize: true }));
+  // config.plugins.push(new  webpack.LoaderOptionsPlugin({ minimize: true }));
   // config.plugins.push(new BundleAnalyzerPlugin({ analyzerMode: 'static' }));
 }
 
