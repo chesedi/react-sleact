@@ -78,7 +78,7 @@ const config: Configuration = {
     publicPath: '/dist/',
   },
   devServer: {
-    historyApiFallback: true, // react router
+    historyApiFallback: true, // react router, 속인다
     port: 3090,
     publicPath: '/dist/',
     proxy: {
