@@ -1,7 +1,7 @@
 import ChannelList from '@components/ChannelList';
-// import DMList from '@components/DMList';
-// import InviteChannelModal from '@components/InviteChannelModal';
-// import InviteWorkspaceModal from '@components/InviteWorkspaceModal';
+import DMList from '@components/DMList';
+import InviteChannelModal from '@components/InviteChannelModal';
+import InviteWorkspaceModal from '@components/InviteWorkspaceModal';
 import Menu from '@components/Menu';
 import Modal from '@components/Modal';
 import useInput from '@hooks/useInput';
@@ -193,7 +193,7 @@ const Workspace: VFC = () => {
               </WorkspaceModal>
             </Menu>
             <ChannelList />
-            {/* <DMList /> */}
+            <DMList />
           </MenuScroll>
         </Channels>
         <Chats>
@@ -221,16 +221,16 @@ const Workspace: VFC = () => {
         onCloseModal={onCloseModal}
         setShowCreateChannelModal={setShowCreateChannelModal}
       />
-      {/* <InviteWorkspaceModal
+      <InviteWorkspaceModal
         show={showInviteWorkspaceModal}
         onCloseModal={onCloseModal}
         setShowInviteWorkspaceModal={setShowInviteWorkspaceModal}
-      /> */}
-      {/* <InviteChannelModal
+      />
+      <InviteChannelModal
         show={showInviteChannelModal}
         onCloseModal={onCloseModal}
         setShowInviteChannelModal={setShowInviteChannelModal}
-      /> */}
+      />
     </div>
   );
 };
