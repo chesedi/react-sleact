@@ -25,8 +25,8 @@ const LogIn = () => {
           },
         )
         .then((response) => {
-          mutate(response.data, false); // 기본적에 가지고 있은 정보를 수정함
-          // revalidate(); // 원할때 실행 한다(SWR)
+          // mutate(response.data, false); // 기본적에 가지고 있은 정보를 수정함
+          revalidate(); // 원할때 실행 한다(SWR)
         })
         .catch((error) => {
           setLogInError(error.response?.data?.statusCode === 401);

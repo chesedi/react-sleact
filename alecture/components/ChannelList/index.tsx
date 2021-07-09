@@ -1,5 +1,5 @@
 // import useSocket from '@hooks/useSocket';
-// import { CollapseButton } from '@components/DMList/styles';
+import { CollapseButton } from '@components/DMList/styles';
 import { IChannel, IUser } from '@typings/db';
 import fetcher from '@utils/fetcher';
 import React, { FC, useCallback, useState } from 'react';
@@ -27,7 +27,7 @@ const ChannelList: FC = () => {
 
   return (
     <>
-      {/* <h2>
+      <h2>
         <CollapseButton collapse={channelCollapse} onClick={toggleChannelCollapse}>
           <i
             className="c-icon p-channel_sidebar__section_heading_expand p-channel_sidebar__section_heading_expand--show_more_feature c-icon--caret-right c-icon--inherit c-icon--inline"
@@ -36,7 +36,7 @@ const ChannelList: FC = () => {
           />
         </CollapseButton>
         <span>Channels</span>
-      </h2> */}
+      </h2>
       <div>
         {!channelCollapse &&
           channelData?.map((channel) => {
