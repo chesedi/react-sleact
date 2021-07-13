@@ -63,6 +63,7 @@ app.use(passport.session());
 
 app.use("/api", apiRouter);
 app.get("*", (req, res, next) => {
+  // react에게 통제권을 넘긴다
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
