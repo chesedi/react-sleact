@@ -27,7 +27,7 @@
     "db:migrate": "npm run typeorm migration:run",
     "db:migrate:revert": "npm run typeorm migration:revert",
     "db:create-migration": "npm run typeorm migration:create -- -n",
-    "db:generate-migration": "npm run typeorm migration:generate -- -n" 
+    "db:generate-migration": "npm run typeorm migration:generate -- -n"
   },
   "dependencies": {
     "@nestjs/common": "^7.6.13",
@@ -52,7 +52,7 @@
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
     "pm2": "^5.0.0",
-    "reflect-metadata": "^0.1.13", 
+    "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^6.6.3",
     "swagger-ui-express": "^4.1.6",
