@@ -1,18 +1,5 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Post,
-  Req,
-  Res,
-  UseInterceptors,
-} from '@nestjs/common';
-import {
-  ApiOkResponse,
-  ApiOperation,
-  ApiResponse,
-  ApiTags,
-} from '@nestjs/swagger';
+import { Body, Controller, Get, Post, Req, Res, UseInterceptors } from '@nestjs/common';
+import { ApiOkResponse, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { User } from 'src/common/decorators/user.decorator';
 import { UserDto } from 'src/common/dto/user.dto';
 import { undefinedToNullInterceptor } from 'src/common/interceptors/undefinedToNull.interceptor';
@@ -35,10 +22,14 @@ export class UsersController {
 
   @ApiOperation({ summary: '회원가입' })
   @Post()
-  postUsers(@Body() data: JoinRequestDto) {
-    this.usersService.postUsers(data.email, data.nickname, data.password);
+  async join(@Body() body: JoinRequestDto) {
+    await this.usersService.join(body.email, body.nickname, body.password);
   }
-
+  @ApiResponse({
+    status: 200,
+    description: '성공',
+    type: UserDto,
+  })
   @ApiOperation({ summary: '로그인' })
   @Post('login')
   logIn(@User() user) {

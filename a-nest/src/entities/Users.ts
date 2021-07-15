@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import {
   Column,
   CreateDateColumn,
@@ -21,15 +22,31 @@ import { Workspaces } from './Workspaces';
 @Index('email', ['email'], { unique: true })
 @Entity({ schema: 'sleact', name: 'users' })
 export class Users {
+  @ApiProperty({ example: 1, description: '사용자 아이디' })
   @PrimaryGeneratedColumn({ type: 'int', name: 'id' })
   id: number;
 
+  @ApiProperty({
+    example: 'chesedi@gmail.com',
+    description: '이메일',
+    required: true,
+  })
   @Column('varchar', { name: 'email', unique: true, length: 30 })
   email: string;
 
+  @ApiProperty({
+    example: '헤세드',
+    description: '닉네임',
+    required: true,
+  })
   @Column('varchar', { name: 'nickname', length: 30 })
   nickname: string;
 
+  @ApiProperty({
+    example: 'nodeksbook',
+    description: '비밀번호',
+    required: true,
+  })
   @Column('varchar', { name: 'password', length: 100, select: false })
   password: string;
 
@@ -63,10 +80,7 @@ export class Users {
   @OneToMany(() => Mentions, (mentions) => mentions.Receiver)
   Mentions2: Mentions[];
 
-  @OneToMany(
-    () => WorkspaceMembers,
-    (workspacemembers) => workspacemembers.User,
-  )
+  @OneToMany(() => WorkspaceMembers, (workspacemembers) => workspacemembers.User)
   WorkspaceMembers: WorkspaceMembers[];
 
   @OneToMany(() => Workspaces, (workspaces) => workspaces.Owner)
