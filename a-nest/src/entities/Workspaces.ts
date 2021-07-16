@@ -52,11 +52,7 @@ export class Workspaces {
   @OneToMany(() => Mentions, (mentions) => mentions.Workspace)
   Mentions: Mentions[];
 
-  @OneToMany(
-    () => WorkspaceMembers,
-    (workspacemembers) => workspacemembers.Workspace,
-    { cascade: ['insert'] },
-  )
+  @OneToMany(() => WorkspaceMembers, (workspacemembers) => workspacemembers.Workspace, { cascade: ['insert'] })
   WorkspaceMembers: WorkspaceMembers[];
 
   @ManyToOne(() => Users, (users) => users.Workspaces, {

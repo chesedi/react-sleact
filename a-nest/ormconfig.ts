@@ -23,7 +23,7 @@ const config: TypeOrmModuleOptions = {
   autoLoadEntities: true,
   charset: 'utf8mb4',
   synchronize: false, // 소스 상에서 만든 엔티티를 DB로 옮길때 사용, 처음 테이블 생성할때만 사용, 사용 후 꼭 false로 변경
-  logging: true, // 개발시에는 켜두는게 좋다
+  logging: process.env.NODE_ENV !== 'production', // 개발시에는 켜두는게 좋다
   keepConnectionAlive: true, // 서버재시작시 DB 연결 끊김방지(핫로딩을 위해)
 };
 
