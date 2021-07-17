@@ -7,10 +7,11 @@ import { Users } from '../entities/Users';
 import { Workspaces } from '../entities/Workspaces';
 import { ChannelsService } from './channels.service';
 import { ChannelsController } from './channels.controller';
+import { EventsGateway } from 'src/events/events.gateway';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Channels, ChannelChats, Users, Workspaces, ChannelMembers])],
-  providers: [ChannelsService],
+  providers: [ChannelsService, EventsGateway],
   controllers: [ChannelsController],
 })
 export class ChannelsModule {}

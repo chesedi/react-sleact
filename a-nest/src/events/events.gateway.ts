@@ -8,12 +8,12 @@ import {
   WebSocketGateway,
   WebSocketServer,
 } from '@nestjs/websockets';
+import { on } from 'events';
 import { Server, Socket } from 'socket.io';
 import { onlineMap } from './onlineMap';
 
 @WebSocketGateway({ namespace: /\/ws-.+/ })
-export class EventsGateway
-  implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
+export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer() public server: Server;
 
   @SubscribeMessage('test')
@@ -22,10 +22,7 @@ export class EventsGateway
   }
 
   @SubscribeMessage('login')
-  handleLogin(
-    @MessageBody() data: { id: number; channels: number[] },
-    @ConnectedSocket() socket: Socket,
-  ) {
+  handleLogin(@MessageBody() data: { id: number; channels: number[] }, @ConnectedSocket() socket: Socket) {
     const newNamespace = socket.nsp;
     console.log('login', newNamespace);
     onlineMap[socket.nsp.name][socket.id] = data.id;
@@ -56,3 +53,6 @@ export class EventsGateway
     newNamespace.emit('onlineList', Object.values(onlineMap[socket.nsp.name]));
   }
 }
+
+// namespace -> room
+// worksapce -> channel/dm

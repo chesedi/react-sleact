@@ -6,7 +6,7 @@ import { ChannelMembers } from '../entities/ChannelMembers';
 import { Channels } from '../entities/Channels';
 import { Users } from '../entities/Users';
 import { Workspaces } from '../entities/Workspaces';
-// import { EventsGateway } from '../events/events.gateway';
+import { EventsGateway } from '../events/events.gateway';
 
 @Injectable()
 export class ChannelsService {
@@ -20,7 +20,8 @@ export class ChannelsService {
     @InjectRepository(ChannelChats)
     private channelChatsRepository: Repository<ChannelChats>,
     @InjectRepository(Users)
-    private usersRepository: Repository<Users>, // private readonly eventsGateway: EventsGateway,
+    private usersRepository: Repository<Users>,
+    private readonly eventsGateway: EventsGateway,
   ) {}
 
   async findById(id: number) {
@@ -133,12 +134,12 @@ export class ChannelsService {
       where: { id: savedChat.id },
       relations: ['User', 'Channel'],
     });
-    // socket.io로 워크스페이스+채널 사용자에게 전송
 
-    // this.eventsGateway.server
-    //   // .of(`/ws-${url}`)
-    //   .to(`/ws-${url}-${chatWithUser.ChannelId}`)
-    //   .emit('message', chatWithUser);
+    // socket.io로 워크스페이스+채널 사용자에게 전송
+    this.eventsGateway.server
+      // .of(`/ws-${url}`)
+      .to(`/ws-${url}-${chatWithUser.ChannelId}`)
+      .emit('message', chatWithUser);
   }
 
   async createWorkspaceChannelImages(url: string, name: string, files: Express.Multer.File[], myId: number) {
@@ -150,6 +151,9 @@ export class ChannelsService {
       })
       .where('channel.name = :name', { name })
       .getOne();
+    if (!channel) {
+      throw new NotFoundException('채널이 존재하지 않습니다');
+    }
     for (let i = 0; i < files.length; i++) {
       const chats = new ChannelChats();
       chats.content = files[i].path;
@@ -160,10 +164,11 @@ export class ChannelsService {
         where: { id: savedChat.id },
         relations: ['User', 'Channel'],
       });
-      // this.eventsGateway.server
-      //   // .of(`/ws-${url}`)
-      //   .to(`/ws-${url}-${chatWithUser.ChannelId}`)
-      //   .emit('message', chatWithUser);
+
+      this.eventsGateway.server
+        // .of(`/ws-${url}`)
+        .to(`/ws-${url}-${chatWithUser.ChannelId}`)
+        .emit('message', chatWithUser);
     }
   }
 
