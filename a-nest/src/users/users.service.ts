@@ -1,47 +1,48 @@
-import { BadRequestException, HttpException, Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Users } from 'src/entities/Users';
-import { Repository, Transaction, TransactionRepository, Connection } from 'typeorm';
+import { Repository } from 'typeorm';
 import bcrypt from 'bcrypt';
-import { WorkspaceMembers } from 'src/entities/WorkspaceMembers';
-import { ChannelMembers } from 'src/entities/ChannelMembers';
+import { ChannelMembers } from '../entities/ChannelMembers';
+
+import { Users } from '../entities/Users';
+import { WorkspaceMembers } from '../entities/WorkspaceMembers';
 
 @Injectable()
 export class UsersService {
   constructor(
-    @InjectRepository(Users)
-    private usersRepository: Repository<Users>,
+    @InjectRepository(Users) private usersRepository: Repository<Users>,
     @InjectRepository(WorkspaceMembers)
     private workspaceMembersRepository: Repository<WorkspaceMembers>,
     @InjectRepository(ChannelMembers)
-    private channelMembersRepository: Repository<ChannelMembers>, // private connection: Connection,
+    private channelMembersRepository: Repository<ChannelMembers>,
   ) {}
 
-  getUser() {}
+  async findByEmail(email: string) {
+    return this.usersRepository.findOne({
+      where: { email },
+      select: ['id', 'email', 'password'],
+    });
+  }
 
-  @Transaction()
   async join(email: string, nickname: string, password: string) {
-    // const queryRunner = this.connection.createQueryRunner();
-    // queryRunner.connect();
-
+    const hashedPassword = await bcrypt.hash(password, 12);
     const user = await this.usersRepository.findOne({ where: { email } });
     if (user) {
-      throw new UnauthorizedException('이미 존재하는 사용자입니다');
+      return false;
     }
-    const hashedPassword = await bcrypt.hash(password, 12);
     const returned = await this.usersRepository.save({
       email,
       nickname,
       password: hashedPassword,
     });
-    await this.workspaceMembersRepository.save({
-      UserId: returned.id,
-      WorkspaceId: 1,
-    });
-    await this.channelMembersRepository.save({
-      UserId: returned.id,
-      ChannelId: 1,
-    });
+    const workspaceMember = new WorkspaceMembers();
+    workspaceMember.UserId = returned.id;
+    workspaceMember.WorkspaceId = 1;
+    await this.workspaceMembersRepository.save(workspaceMember);
+    const channelMember = new ChannelMembers();
+    channelMember.UserId = returned.id;
+    channelMember.ChannelId = 1;
+    await this.channelMembersRepository.save(channelMember);
     return true;
   }
 }
